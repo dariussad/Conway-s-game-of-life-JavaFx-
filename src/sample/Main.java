@@ -33,10 +33,10 @@ public class Main extends Application {
     private EventHandler<KeyEvent> keyboardHandler;
     private EventHandler<MouseEvent> mouseHandler;
     private AnimationTimer timer;
-    private static final double WIDTH = 400;
-    private static final double HEIGHT = 400;
-    private static final double CELL_SIZE = 40;
-    private static final long SPEED = 150L;
+    private static final double WIDTH = 800;
+    private static final double HEIGHT = 600;
+    private static final double CELL_SIZE = 4;
+    private static final long SPEED = 100L;
     private boolean isStopped = false;
     private boolean isGenerationOn = false;
 
@@ -46,7 +46,7 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Conway game of life");
-        createNodes(nodes, conway, cells, cellsView);
+        createNodes(nodes, cells, cellsView);
         this.scene = new Scene(new Group(nodes), WIDTH, HEIGHT);
         scene.setFill(Color.BLACK);
         primaryStage.setScene(scene);
@@ -63,7 +63,7 @@ public class Main extends Application {
             public void handle(long now) {
                 try {
                     Thread.sleep(SPEED);
-                    updateNodes(nodes, conway, cells, cellsView);
+                    updateNodes(nodes, cells, cellsView);
                     scene = new Scene(new Group(nodes), WIDTH, HEIGHT);
                     scene.setFill(Color.BLACK);
                     scene.setOnMouseClicked(mouseHandler);
@@ -147,14 +147,14 @@ public class Main extends Application {
         }
     }
 
-    private List<Node> updateNodes(List<Node> nodes, Conway conway, Cells cells, CellsView cellsView) {
+    private List<Node> updateNodes(List<Node> nodes, Cells cells, CellsView cellsView) {
         cellsArray = cells.updateCellGeneration(cellsArray);
         nodes.clear();
         nodes.addAll(cellsView.createCells(WIDTH, HEIGHT, CELL_SIZE, cellsArray));
         return nodes;
     }
 
-    private List<Node> createNodes(List<Node> nodes, Conway conway, Cells cells, CellsView cellsView) {
+    private List<Node> createNodes(List<Node> nodes, Cells cells, CellsView cellsView) {
         cellsArray = cells.createMockCells(WIDTH, HEIGHT, CELL_SIZE);
         nodes.clear();
         if (isGenerationOn) {
